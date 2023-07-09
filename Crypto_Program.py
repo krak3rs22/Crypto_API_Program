@@ -8,7 +8,7 @@ if api.ok:
 
 #  This function displays the currency value, if the value isn't found the program returns an according message
 def display_currency_value():
-    currency_name = input("Enter the name or symbol of the specific currency: ").upper()
+    currency_name = input("Enter the name or symbol of the specific currency: ").upper().strip()
     if currency_name in rates:
         print(f"{currency_name}: {rates[currency_name]} USD")
     else:
@@ -16,8 +16,8 @@ def display_currency_value():
 
 #  This function compares two cryptocurrencies, and also shows the difference between them, if the values aren't found the program returns an according message
 def compare_currencies():
-    currency_name1 = input("Enter the name or symbol of the first currency that will be compared: ").upper()
-    currency_name2 = input("Enter the name or symbol of the second currency that will be compared: ").upper()
+    currency_name1 = input("Enter the name or symbol of the first currency that will be compared: ").upper().strip()
+    currency_name2 = input("Enter the name or symbol of the second currency that will be compared: ").upper().strip()
     if currency_name1 in rates and currency_name2 in rates:
         difference = rates[currency_name1] - rates[currency_name2]
         print(f"{currency_name1}: {rates[currency_name1]} USD; {currency_name2}: {rates[currency_name2]} USD; Difference: {difference:.5f} USD")
@@ -32,7 +32,7 @@ def track_portfolio():
     portfolio = {}
     num_coins = int(input("Enter the number of coins in your portfolio: "))
     for i in range(num_coins):
-        coin_name = input("Enter the name or symbol of the coin: ").upper()
+        coin_name = input("Enter the name or symbol of the coin: ").upper().strip()
         if coin_name in rates:
             coin_amount = float(input(f"Enter the amount of {coin_name}: "))
             portfolio[coin_name] = coin_amount
@@ -45,7 +45,7 @@ def track_portfolio():
 
 #  This function notifies the user if a cryptocurrency has reached a certain value given by the user
 def set_price_notifications():
-    target_currency = input("Enter the name or symbol of the currency to set notifications for: ").upper()
+    target_currency = input("Enter the name or symbol of the currency to set notifications for: ").upper().strip()
     if target_currency in rates:
         target_price = float(input(f"Enter the target price for {target_currency}: "))
         while True:
@@ -70,8 +70,8 @@ def display_all_currencies():
 
 #  Converts the input currency into the output currency by multiplying the the amount of currency by the conversion rate
 def currency_conversion():
-    input_currency = input("Enter the name or symbol of the input currency: ").upper()
-    output_currency = input("Enter the name or symbol of the output currency: ").upper()
+    input_currency = input("Enter the name or symbol of the input currency: ").upper().strip()
+    output_currency = input("Enter the name or symbol of the output currency: ").upper().strip()
     amount = float(input("Enter the amount of input currency: "))
     if input_currency in rates and output_currency in rates:
         conversion_rate = rates[output_currency] / rates[input_currency]
@@ -83,6 +83,17 @@ def currency_conversion():
         if output_currency not in rates:
             print(f"The currency '{output_currency}' does not exist.")
 
+#  Tells the user how much of a certain currency they can buy for a specific amount of dollars
+def buy_currency():
+    amount = float(input("Enter the amount of dollars you want to spend on a currency: "))
+    currency = input("Enter the currency you want to buy: ").upper().strip()
+    if currency in rates:
+        currency_amount = amount/rates[currency]
+        print(f"You can buy {currency_amount} of '{currency}' for {amount} USD")
+    else:
+        print(f"The currency '{currency}' does not exist.")
+
+
 #  Main program
 while True:
     print("----------------------------------------------------")
@@ -93,7 +104,8 @@ while True:
                        "[4] Set price notifications for a specific currency.\n"
                        "[5] Display all available currencies.\n"
                        "[6] Convert currencies.\n"
-                       "[0] Exit the program.\n")
+                       "[7] Display how much of a certain currency you can buy.\n"
+                       "[0] Exit the program.\n").strip()
     if user_input == "1":
         display_currency_value()
     elif user_input == "2":
@@ -106,8 +118,11 @@ while True:
         display_all_currencies()
     elif user_input == "6":
         currency_conversion()
+    elif user_input == "7":
+        buy_currency()
     elif user_input == "0":
         print("Exiting the program.")
         break
     else:
         print("Invalid input. Please enter a valid option.")
+
